@@ -5,8 +5,8 @@ C++ demo - a tic-tac-toe with 100 SLOC using SFML
 
 dependencies
 ============
-- C++14 compiler
-- SFML 1.6
+- C++14 compiler (gcc 4.8 or clang 3.2 and up will do)
+- SFML 1.6 (on Debian Linux: `sudo apt-get install libsfml-dev`)
 
 build
 =====
