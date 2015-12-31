@@ -21,7 +21,7 @@ struct tic_tac_toe {
   typedef victory<
     0b111000000, 0b000111000, 0b000000111, 0b100100100,
     0b010010010, 0b001001001, 0b100010001, 0b001010100
-  > checker;
+    > checker;
 
   tic_tac_toe(): grid_(0), turn_(0), moves_(0) {}
 
@@ -59,42 +59,42 @@ int main() {
     "100 SLOC C++ Tic-Tac-Toe"
   );
 
-  sf::Image X, O;
-  if (!X.LoadFromFile("x.png") || !O.LoadFromFile("o.png")) { return -1; }
+  sf::Texture X, O;
+  if (!X.loadFromFile("x.png") || !O.loadFromFile("o.png")) { return -1; }
 
   sf::Music bgm;
-  if (bgm.OpenFromFile("bgm.ogg")) {
-    bgm.SetLoop(true);
-    bgm.Play();
+  if (bgm.openFromFile("bgm.ogg")) {
+    bgm.setLoop(true);
+    bgm.play();
   }
 
   tic_tac_toe game;
-
-  while (app.IsOpened()) {
-    for (sf::Event e; app.GetEvent(e); ) {
-      if ((e.Type == sf::Event::KeyPressed && e.Key.Code == sf::Key::Escape)
-          || e.Type == sf::Event::Closed
+  while (app.isOpen()) {
+    for (sf::Event e; app.pollEvent(e); ) {
+      if ((e.type == sf::Event::KeyPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+          || e.type == sf::Event::Closed
       ) {
-        app.Close();
-      } else if (e.Type == sf::Event::MouseButtonPressed) {
-        game.move(e.MouseButton.Y / slot, e.MouseButton.X / slot);
+        app.close();
+      } else if (e.type == sf::Event::MouseButtonPressed) {
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(app);
+        game.move(mousePosition.y / slot, mousePosition.x / slot);
       }
     }
 
-    app.Clear();
+    app.clear();
     for (unsigned y = 0; y < 3; ++y) {
       for (unsigned x = 0; x < 3; ++x) {
         if (auto which = game.get(y, x)) {
           sf::Sprite sprite;
-          sprite.SetImage((which == tic_tac_toe::cross) ? X : O);
-          sprite.SetPosition(x * slot, y * slot);
-          app.Draw(sprite);
+          sprite.setTexture((which == tic_tac_toe::cross) ? X : O);
+          sprite.setPosition(x * slot, y * slot);
+          app.draw(sprite);
         }
       }
     }
-    app.Display();
+    app.display();
   }
 
-  if (bgm.GetStatus() == sf::Sound::Playing) { bgm.Stop(); }
+  if (bgm.getStatus() == sf::Sound::Playing) { bgm.stop(); }
   return 0;
 }
